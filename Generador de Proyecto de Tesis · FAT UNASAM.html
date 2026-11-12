@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Generador de Proyecto de Tesis · FAT UNASAM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+:root{
+  --bg:#f3f4f7; --surface:#ffffff; --ink:#1b2232; --muted:#5a6376; --line:#d8dce5;
+  --accent:#1f3a68; --accent-ink:#ffffff; --soft:#e7ecf5; --guinda:#8a1c2b; --gold:#a8854a;
+  --ok:#2b6e4f; --warn:#a4501a;
+  --display:"Source Serif 4", Georgia, serif; --body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#12161f; --surface:#1b2130; --ink:#e8ebf2; --muted:#a4acbd; --line:#2e3648;
+  --accent:#8fb0e6; --accent-ink:#0f1726; --soft:#253049; --guinda:#e2808c; --gold:#d6b47a;
+  --ok:#7fcfa6; --warn:#f0a774; color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body);
+  padding:calc(24px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(48px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+header{display:flex;flex-direction:column;gap:6px;border-bottom:3px double var(--gold);padding-bottom:16px}
+.inst{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--guinda)}
+h1{font-family:var(--display);font-weight:600;font-size:clamp(26px,3.8vw,40px);line-height:1.12;margin:0;color:var(--ink);text-wrap:balance}
+.lead{color:var(--muted);max-width:75ch;margin:0}
+.grid{display:grid;grid-template-columns:minmax(0,430px) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:940px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;min-width:0}
+legend,summary{font-family:var(--display);font-weight:600;font-size:19px;padding:0;margin-bottom:4px;display:flex;align-items:center;gap:10px;color:var(--accent)}
+summary{cursor:pointer;list-style:none;margin:0}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸";font-size:14px;transition:transform .15s}
+details[open] summary::before{transform:rotate(90deg)}
+details>fieldset{margin-top:10px}
+.tag{font-family:var(--body);font-size:11px;font-weight:700;letter-spacing:.06em;background:var(--soft);color:var(--accent);padding:2px 9px;border-radius:99px}
+label{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600}
+label small{font-weight:400;color:var(--muted)}
+input,select,textarea{font:inherit;font-size:14px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;min-width:0}
+textarea{min-height:84px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.row{display:grid;grid-template-columns:118px minmax(0,1fr);gap:10px}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:440px){.row,.row2{grid-template-columns:minmax(0,1fr)}}
+hr{border:0;border-top:1px solid var(--line);margin:0}
+.check{flex-direction:row;align-items:center;gap:8px;font-weight:600}
+.check input{width:auto}
+.btn{font:inherit;font-weight:700;font-size:14px;border:1px solid transparent;border-radius:8px;padding:9px 16px;cursor:pointer;background:var(--accent);color:var(--accent-ink)}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:var(--surface);color:var(--accent);border-color:var(--line)}
+.btn.sm{font-size:12px;padding:5px 10px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.hint{font-size:12.5px;color:var(--muted);margin:0}
+.mapa{font-size:12.5px;color:var(--ink);background:var(--soft);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.mapa b{color:var(--accent)}
+.mapa .w{color:var(--warn)}
+.mapa ul{margin:0;padding-left:18px}
+.paper{background:#fff;color:#111;border-radius:4px;padding:clamp(18px,4.5vw,56px);box-shadow:0 1px 2px rgba(0,0,0,.08),0 12px 32px -18px rgba(20,30,60,.45);display:flex;flex-direction:column;gap:4px;min-width:0}
+.sec{position:relative;padding-top:6px;border-top:1px dashed #e3e3e3}
+.sec:first-child{border-top:0}
+.sec-head{display:flex;justify-content:flex-end;gap:8px;margin-bottom:-26px;position:relative;z-index:1}
+.sec-head .btn.ghost{background:#fff;color:#1f3a68;border-color:#d8dce5}
+.cover{border:1px solid #ececec;padding:24px 12px;margin-bottom:10px}
+.tablewrap{overflow-x:auto}
+.meter{font-size:12px;font-weight:700;display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;margin:2px 0 4px;font-family:var(--body)}
+.meter .ok{color:#2b6e4f} .meter .warn{color:#a4501a} .meter .m{color:#666;font-weight:400}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:8px;font-weight:700;font-size:14px;z-index:20;max-width:90vw;text-align:center}
+footer{font-size:12px;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="inst">Universidad Nacional Santiago Antúnez de Mayolo · Facultad de Administración y Turismo</span>
+    <h1>Generador del proyecto de tesis: título, problemas, objetivos, hipótesis y matriz de consistencia</h1>
+    <p class="lead">Ingresa tus dos variables y sus dimensiones. El programa redacta el título, los problemas, objetivos e hipótesis (generales y específicos), el cuadro de variables y la matriz de consistencia. Puedes descargarlo como documento de Word (.docx) o copiarlo con formato.</p>
+  </header>
+
+  <div class="grid">
+    <form class="panel" id="f" autocomplete="off">
+      <fieldset>
+        <legend>Variable 1 <span class="tag" id="tag1">V1 · independiente (X)</span></legend>
+        <div class="row">
+          <label>Artículo<select id="a1"><option value="">(ninguno)</option><option>el</option><option selected>la</option><option>los</option><option>las</option></select></label>
+          <label>Nombre de la variable<input id="v1" value="Gestión del talento humano"></label>
+        </div>
+        <label>Dimensiones de V1 <small>Una por línea y con su artículo (ej.: el reclutamiento)</small>
+          <textarea id="d1">el reclutamiento
+la capacitación
+la evaluación del desempeño</textarea></label>
+      </fieldset>
+      <hr>
+      <fieldset>
+        <legend>Variable 2 <span class="tag" id="tag2">V2 · dependiente (Y)</span></legend>
+        <div class="row">
+          <label>Artículo<select id="a2"><option value="">(ninguno)</option><option selected>el</option><option>la</option><option>los</option><option>las</option></select></label>
+          <label>Nombre de la variable<input id="v2" value="Desempeño laboral"></label>
+        </div>
+        <label>Dimensiones de V2 <small>Una por línea y con su artículo</small>
+          <textarea id="d2">la productividad
+la eficiencia
+la calidad del servicio</textarea></label>
+      </fieldset>
+      <hr>
+      <fieldset>
+        <legend>Contexto</legend>
+        <div class="row">
+          <label>Enlace<select id="pr"><option value="en" selected>en</option><option value="de">de</option></select></label>
+          <label>Unidad de análisis / institución <small>Tal como irá después del enlace</small>
+            <input id="u" value="los colaboradores de la agencia Huaraz de Caja Huancayo"></label>
+        </div>
+        <div class="row2">
+          <label>Lugar <small>Se omite si ya figura en la unidad</small><input id="l" value="Huaraz"></label>
+          <label>Año<input id="y" value="2026" inputmode="numeric"></label>
+        </div>
+        <label>Título personalizado <small>Opcional: si lo llenas, reemplaza al título generado</small>
+          <input id="tc" placeholder="Déjalo vacío para usar el título automático"></label>
+      </fieldset>
+      <hr>
+      <fieldset>
+        <legend>Tipo de investigación</legend>
+        <label>Relación entre variables
+          <select id="t">
+            <option value="rel">Correlacional: “relación entre V1 y V2”</option>
+            <option value="inf">Causal: “influencia de V1 en V2”</option>
+            <option value="efe">Explicativa: “efecto de V1 en V2”</option>
+          </select></label>
+        <div class="row2">
+          <label>Verbo del objetivo
+            <select id="vb"><option>Determinar</option><option>Establecer</option><option>Analizar</option><option>Identificar</option><option>Evaluar</option><option>Explicar</option><option>Describir</option></select></label>
+          <label>Intensidad de la hipótesis
+            <select id="it"><option value="s">significativa</option><option value="ds">directa y significativa</option><option value="ps">positiva y significativa</option></select></label>
+        </div>
+        <label>Cruce para los específicos
+          <select id="cx">
+            <option value="v1d2">V1 con cada dimensión de V2 (V1 – D1V2, V1 – D2V2…)</option>
+            <option value="d1v2">Cada dimensión de V1 con V2 (D1V1 – V2, D2V1 – V2…)</option>
+            <option value="dd">Dimensión con dimensión (D1V1 – D1V2, D2V1 – D2V2…)</option>
+          </select></label>
+        <label class="check"><input type="checkbox" id="h0"> Incluir hipótesis nulas (H₀)</label>
+      </fieldset>
+      <hr>
+      <details>
+        <summary>Metodología (matriz)</summary>
+        <fieldset>
+          <p class="hint">Si dejas un campo vacío, se llena según el tipo de investigación elegido.</p>
+          <div class="row2">
+            <label>Enfoque<input id="me" placeholder="Cuantitativo"></label>
+            <label>Tipo<input id="mt" placeholder="Básica"></label>
+            <label>Nivel<input id="mn" placeholder="(automático)"></label>
+            <label>Diseño<input id="md" placeholder="(automático)"></label>
+            <label>Población<input id="mp" placeholder="Por definir"></label>
+            <label>Muestra<input id="mm" placeholder="Por definir"></label>
+            <label>Técnica<input id="mte" placeholder="Encuesta"></label>
+            <label>Instrumento<input id="mi" placeholder="Cuestionario"></label>
+          </div>
+        </fieldset>
+      </details>
+      <hr>
+      <details>
+        <summary>Carátula</summary>
+        <fieldset>
+          <label class="check"><input type="checkbox" id="cc" checked> Incluir carátula en el documento</label>
+          <label>Documento<select id="dt"><option>PROYECTO DE TESIS</option><option>PLAN DE TESIS</option><option>TESIS</option></select></label>
+          <label>Grado o título que se opta<input id="gt" value="Para optar el título profesional de Licenciado(a) en Administración"></label>
+          <label>Autor(es) <small>Uno por línea</small><textarea id="au" style="min-height:58px" placeholder="Apellidos y nombres"></textarea></label>
+          <label>Asesor(a)<input id="as" placeholder="Dr./Mg. Apellidos y nombres"></label>
+        </fieldset>
+      </details>
+      <hr>
+      <details>
+        <summary>Formato del documento</summary>
+        <fieldset>
+          <div class="row2">
+            <label>Fuente<select id="fn"><option>Times New Roman</option><option>Arial</option></select></label>
+            <label>Tamaño<select id="fs"><option value="12" selected>12 pt</option><option value="11">11 pt</option></select></label>
+            <label>Interlineado<select id="ls"><option value="1.5" selected>1,5</option><option value="2">Doble (APA 7)</option><option value="1">Sencillo</option></select></label>
+            <label>Máx. palabras del título<input id="mw" value="20" inputmode="numeric"></label>
+          </div>
+          <p class="hint">Hoja A4; márgenes: izquierdo 3 cm, superior, derecho e inferior 2,5 cm. La matriz de consistencia sale en una hoja horizontal. Confirma estos valores con el reglamento vigente de tu escuela.</p>
+        </fieldset>
+      </details>
+      <div class="mapa" id="mapa"></div>
+      <div class="toolbar">
+        <button type="button" class="btn ghost sm" id="clear">Limpiar todo</button>
+        <button type="button" class="btn ghost sm" id="sample">Cargar ejemplo</button>
+      </div>
+    </form>
+
+    <section class="panel" aria-label="Resultado">
+      <div class="toolbar">
+        <button class="btn" id="dlDocx">Descargar Word (.docx)</button>
+        <button class="btn ghost" id="copyAll">Copiar todo</button>
+        <button class="btn ghost" id="copyMat">Copiar solo la matriz</button>
+      </div>
+      <p class="hint">El .docx incluye carátula, numeración de apartados y la matriz en hoja horizontal. Si lo prefieres, copia y pega con Ctrl + V en Word: se conserva el formato. Cada bloque tiene además su propio botón «Copiar».</p>
+      <div class="paper" id="paper"></div>
+    </section>
+  </div>
+  <footer>Herramienta de apoyo académico. La redacción final debe revisarla tu asesor(a) y ajustarse al reglamento de grados y títulos vigente de la FAT.</footer>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script id="core">
+/* ===== Núcleo: redacción, modelo del documento, HTML y DOCX (sin DOM) ===== */
+const ARTS=["el","la","los","las","lo","un","una","unos","unas"];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const xesc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g,"");
+const low=s=>{s=String(s).trim(); if(!s) return s; if(s.length>1 && /[A-ZÁÉÍÓÚÑ]/.test(s[1])) return s; return s[0].toLowerCase()+s.slice(1)};
+const cap=s=>{s=String(s).trim(); return s? s[0].toUpperCase()+s.slice(1):s};
+const fix=s=>s.replace(/\bde el\b/g,"del").replace(/\ba el\b/g,"al").replace(/\s+/g," ").replace(/\s+([,.?;:])/g,"$1").trim();
+const lines=s=>String(s||"").split(/\n+/).map(x=>x.trim()).filter(Boolean);
+const withArt=(art,v)=>(art? art+" ":"")+low(v);
+const upperEs=s=>s.toLocaleUpperCase("es");
+
+function compose(o){
+  const V1=o.v1.trim()||"Variable 1", V2=o.v2.trim()||"Variable 2";
+  const A=withArt(o.a1,V1), B=withArt(o.a2,V2);
+  const D1=lines(o.d1), D2=lines(o.d2);
+  const u=o.u.trim(), lugar=o.l.trim(), y=o.y.trim(), prep=o.pr||"en";
+  const place = lugar && !u.toLowerCase().includes(lugar.toLowerCase()) ? lugar : "";
+  const segs=[]; if(u) segs.push(prep+" "+u); if(place) segs.push(u?place:"en "+place); if(y) segs.push(y);
+  const ctx=segs.join(", ");
+  const vb=o.vb, it=o.it||"s";
+  const REL={s:"una relación significativa",ds:"una relación directa y significativa",ps:"una relación positiva y significativa"}[it];
+  const INF={s:"significativamente",ds:"de manera directa y significativa",ps:"de manera positiva y significativa"}[it];
+  const EFE={s:"un efecto significativo",ds:"un efecto directo y significativo",ps:"un efecto positivo y significativo"}[it];
+  const T={
+    rel:{title:()=>`${cap(V1)} y ${low(V2)} ${ctx}`,
+      q:(x,z)=>`¿Qué relación existe entre ${x} y ${z} ${ctx}?`,
+      ob:(x,z)=>`${vb} la relación que existe entre ${x} y ${z} ${ctx}.`,
+      h:(x,z)=>`Existe ${REL} entre ${x} y ${z} ${ctx}.`,
+      h0:(x,z)=>`No existe una relación significativa entre ${x} y ${z} ${ctx}.`},
+    inf:{title:()=>`${cap(V1)} y su influencia en ${B} ${ctx}`,
+      q:(x,z)=>`¿De qué manera ${x} influye en ${z} ${ctx}?`,
+      ob:(x,z)=>`${vb} la influencia de ${x} en ${z} ${ctx}.`,
+      h:(x,z)=>`${cap(x)} influye ${INF} en ${z} ${ctx}.`,
+      h0:(x,z)=>`${cap(x)} no influye significativamente en ${z} ${ctx}.`},
+    efe:{title:()=>`Efecto de ${A} en ${B} ${ctx}`,
+      q:(x,z)=>`¿Cuál es el efecto de ${x} en ${z} ${ctx}?`,
+      ob:(x,z)=>`${vb} el efecto de ${x} en ${z} ${ctx}.`,
+      h:(x,z)=>`${cap(x)} tiene ${EFE} en ${z} ${ctx}.`,
+      h0:(x,z)=>`${cap(x)} no tiene un efecto significativo en ${z} ${ctx}.`}
+  }[o.t]||null;
+  const Tx=T||{};
+  let pairs,pairLbl;
+  if(o.cx==="d1v2"){pairs=D1.map(d=>[low(d),B]);pairLbl=D1.map((_,i)=>`D${i+1}V1 – V2`)}
+  else if(o.cx==="dd"){const n=Math.min(D1.length,D2.length);pairs=D1.slice(0,n).map((d,i)=>[low(d),low(D2[i])]);pairLbl=pairs.map((_,i)=>`D${i+1}V1 – D${i+1}V2`)}
+  else {pairs=D2.map(d=>[A,low(d)]);pairLbl=D2.map((_,i)=>`V1 – D${i+1}V2`)}
+
+  const title=o.tc&&o.tc.trim()? fix(o.tc.trim()) : fix(cap(Tx.title()));
+  const words=title.split(/\s+/).filter(Boolean).length;
+  const maxW=parseInt(o.mw,10)||20;
+  const r={V1:cap(V1),V2:cap(V2),D1,D2,title,words,maxW,pairLbl,ctx,
+    PG:fix(Tx.q(A,B)),OG:fix(Tx.ob(A,B)),HG:fix(Tx.h(A,B)),HG0:fix(Tx.h0(A,B)),
+    PE:pairs.map(p=>fix(Tx.q(...p))),OE:pairs.map(p=>fix(Tx.ob(...p))),
+    HE:pairs.map(p=>fix(Tx.h(...p))),HE0:pairs.map(p=>fix(Tx.h0(...p)))};
+  const W=[];
+  [...D1.map(d=>[d,"V1"]),...D2.map(d=>[d,"V2"])].forEach(([d,v])=>{
+    const first=d.split(/\s+/)[0].toLowerCase(); if(!ARTS.includes(first)) W.push(`La dimensión «${d}» (${v}) no empieza con artículo (el, la, los, las).`)});
+  if(words>maxW) W.push(`El título tiene ${words} palabras; el máximo configurado es ${maxW}. Acorta la unidad de análisis o usa un título personalizado.`);
+  if(o.cx==="dd" && D1.length!==D2.length) W.push(`V1 tiene ${D1.length} dimensiones y V2 tiene ${D2.length}: en el cruce dimensión con dimensión solo se emparejan ${Math.min(D1.length,D2.length)}.`);
+  if(!u) W.push("Falta la unidad de análisis o institución.");
+  if(!pairs.length) W.push("Agrega dimensiones para generar los específicos.");
+  r.warnings=W;
+  const nivelAuto={rel:"Correlacional",inf:"Explicativo (causal)",efe:"Explicativo"}[o.t];
+  const disAuto={rel:"No experimental, transversal, correlacional",inf:"No experimental, transversal, correlacional-causal",efe:"No experimental, transversal, explicativo"}[o.t];
+  const v=(k,d)=>(o[k]||"").trim()||d;
+  r.meth=[["Enfoque",v("me","Cuantitativo")],["Tipo",v("mt","Básica")],["Nivel",v("mn",nivelAuto)],["Diseño",v("md",disAuto)],
+    ["Población",v("mp","Por definir")],["Muestra",v("mm","Por definir")],["Técnica",v("mte","Encuesta")],["Instrumento",v("mi","Cuestionario")]];
+  r.tipoV = o.t==="rel" ? ["Variable 1 (X)","Variable 2 (Y)"] : ["Independiente (X)","Dependiente (Y)"];
+  return r;
+}
+
+/* Modelo de bloques compartido por la vista previa, el portapapeles y el .docx */
+const R=(t,b)=>({t,b:!!b});
+const P=(runs,opt={})=>Object.assign({k:"p",runs:Array.isArray(runs)?runs:[R(runs)]},opt);
+function model(r,o){
+  const B=[]; const H=(sec,t)=>B.push(P([R(t,1)],{sec,before:12,after:6,keepNext:1,align:"left"}));
+  const S=(sec,t)=>B.push(P([R(t,1)],{sec,before:6,after:3,keepNext:1,align:"left"}));
+  const T=(sec,t)=>B.push(P(t,{sec,after:6,align:"both"}));
+  const L=(sec,lbl,t)=>B.push(P([R(lbl+" ",1),R(t)],{sec,after:6,align:"both",indL:0}));
+  if(o.cc){
+    const s="cover",C=(t,sz,b,before,after)=>B.push(P([R(t,b)],{sec:s,align:"center",size:sz,before:before||0,after:after||0}));
+    C("UNIVERSIDAD NACIONAL\n“SANTIAGO ANTÚNEZ DE MAYOLO”",14,1,0,6);
+    C("FACULTAD DE ADMINISTRACIÓN Y TURISMO",13,1,0,4);
+    C("ESCUELA PROFESIONAL DE ADMINISTRACIÓN",12,1,0,48);
+    C(o.dt||"PROYECTO DE TESIS",16,1,0,24);
+    C("“"+upperEs(r.title)+"”",13,1,0,36);
+    C(upperEs((o.gt||"").trim()),12,0,0,36);
+    const aus=lines(o.au);
+    C(aus.length>1?"AUTORES:":"AUTOR(A):",12,1,0,0); C(aus.length?aus.join("\n"):"Apellidos y nombres",12,0,0,18);
+    C("ASESOR(A):",12,1,0,0); C((o.as||"").trim()||"Apellidos y nombres",12,0,0,48);
+    C("HUARAZ – PERÚ\n"+(o.y.trim()||""),12,1,0,0);
+  }
+  let first=true;
+  const brk=()=>{const b=B.length; return ()=>{ if(o.cc && first){B[b].pageBreak=1;} first=false; }};
+  let mark=brk(); H("tit","1. TÍTULO DE LA INVESTIGACIÓN"); mark();
+  B.push(P([R(r.title,1)],{sec:"tit",align:"center",after:6}));
+  H("prob","2. FORMULACIÓN DEL PROBLEMA");
+  S("prob","2.1. Problema general"); T("prob",r.PG);
+  S("prob","2.2. Problemas específicos"); r.PE.forEach((q,i)=>L("prob",`PE${i+1}:`,q));
+  H("obj","3. OBJETIVOS DE LA INVESTIGACIÓN");
+  S("obj","3.1. Objetivo general"); T("obj",r.OG);
+  S("obj","3.2. Objetivos específicos"); r.OE.forEach((q,i)=>L("obj",`OE${i+1}:`,q));
+  H("hip","4. HIPÓTESIS DE LA INVESTIGACIÓN");
+  S("hip","4.1. Hipótesis general");
+  if(o.h0){L("hip","Hi:",r.HG);L("hip","H0:",r.HG0)} else T("hip",r.HG);
+  S("hip","4.2. Hipótesis específicas");
+  r.HE.forEach((h,i)=>{L("hip",`HE${i+1}:`,h); if(o.h0) L("hip",`H0${i+1}:`,r.HE0[i])});
+  H("var","5. VARIABLES Y DIMENSIONES");
+  const cp=(runs,opt)=>Object.assign({runs:Array.isArray(runs)?runs:[R(runs)]},opt||{});
+  const dimParas=arr=>arr.length?arr.map((d,i)=>cp(`D${i+1}: ${cap(d)}`)):[cp("—")];
+  B.push({k:"table",sec:"var",w:[28,24,48],head:["Variable","Tipo","Dimensiones"],rows:[
+    [{p:[cp(r.V1)]},{p:[cp(r.tipoV[0])]},{p:dimParas(r.D1)}],
+    [{p:[cp(r.V2)]},{p:[cp(r.tipoV[1])]},{p:dimParas(r.D2)}]]});
+  B.push({k:"sect",sec:"var"});
+  H("mat","6. MATRIZ DE CONSISTENCIA");
+  const n=r.PE.length;
+  const varCell=[cp([R("V1: ",1),R(r.V1)]),cp([R("Dimensiones:",1)]),...r.D1.map(d=>cp("– "+cap(d))),cp(""),
+                 cp([R("V2: ",1),R(r.V2)]),cp([R("Dimensiones:",1)]),...r.D2.map(d=>cp("– "+cap(d)))];
+  const metCell=r.meth.map(([k,v])=>cp([R(k+": ",1),R(v)]));
+  const rs=Math.max(n,1)+1;
+  const rows=[[{p:[cp([R("Problema general",1)]),cp(r.PG)]},{p:[cp([R("Objetivo general",1)]),cp(r.OG)]},
+    {p:[cp([R("Hipótesis general",1)]),cp(r.HG)]},{p:varCell,rs},{p:metCell,rs}]];
+  if(n){ r.PE.forEach((q,i)=>rows.push([{p:[cp([R(`PE${i+1}: `,1),R(q)])]},{p:[cp([R(`OE${i+1}: `,1),R(r.OE[i])])]},{p:[cp([R(`HE${i+1}: `,1),R(r.HE[i])])]},{cont:1},{cont:1}])) }
+  else rows.push([{p:[cp("Agrega dimensiones para completar los específicos.")],span:3},{cont:1},{cont:1}]);
+  B.push({k:"table",sec:"mat",w:[20,20,20,18,22],head:["Problemas","Objetivos","Hipótesis","Variables y dimensiones","Metodología"],rows});
+  return B;
+}
+
+/* ---- HTML (vista previa y portapapeles, con estilos en línea para Word) ---- */
+function runsHTML(runs){return runs.map(x=>{const t=esc(x.t).replace(/\n/g,"<br>");return x.b?`<b>${t}</b>`:t}).join("")}
+function blockHTML(b){
+  if(b.k==="p"){
+    const al={both:"justify",center:"center",left:"left"}[b.align||"both"];
+    const st=`margin:${b.before||0}pt 0 ${b.after||0}pt;text-align:${al}`+(b.size?`;font-size:${b.size}pt`:"");
+    return `<p style="${st}">${runsHTML(b.runs)||"&nbsp;"}</p>`;
+  }
+  if(b.k==="table"){
+    const tot=b.w.reduce((a,c)=>a+c,0);
+    const th=b.head.map((h,i)=>`<th style="border:1px solid #000;background:#d9e2f3;padding:4pt;text-align:center;vertical-align:middle;width:${(b.w[i]/tot*100).toFixed(1)}%">${esc(h)}</th>`).join("");
+    const tr=b.rows.map(row=>"<tr>"+row.map(c=>{ if(c.cont) return "";
+      const ps=c.p.map(p=>`<p style="margin:0 0 2pt;text-align:left">${runsHTML(p.runs)||"&nbsp;"}</p>`).join("");
+      return `<td${c.rs?` rowspan="${c.rs}"`:""}${c.span?` colspan="${c.span}"`:""} style="border:1px solid #000;padding:4pt;vertical-align:top">${ps}</td>`}).join("")+"</tr>").join("");
+    return `<div class="tablewrap"><table border="1" cellpadding="5" style="border-collapse:collapse;width:100%;font-size:10pt;line-height:1.15"><thead><tr>${th}</tr></thead><tbody>${tr}</tbody></table></div>`;
+  }
+  return "";
+}
+
+/* ---- DOCX: WordprocessingML + ZIP sin compresión, sin librerías ---- */
+const CM=567;
+function docx(blocks,o){
+  const font=o.fn||"Times New Roman", sz=(parseFloat(o.fs)||12)*2, line=Math.round(240*(parseFloat(o.ls)||1.5));
+  const mar={top:Math.round(2.5*CM),right:Math.round(2.5*CM),bottom:Math.round(2.5*CM),left:3*CM};
+  const A4={w:11906,h:16838};
+  const textW=A4.w-mar.left-mar.right, landW=A4.h-mar.left-mar.right;
+  const sect=land=>`<w:sectPr>${land?`<w:pgSz w:w="${A4.h}" w:h="${A4.w}" w:orient="landscape"/>`:`<w:pgSz w:w="${A4.w}" w:h="${A4.h}"/>`}<w:pgMar w:top="${mar.top}" w:right="${mar.right}" w:bottom="${mar.bottom}" w:left="${mar.left}" w:header="709" w:footer="709" w:gutter="0"/></w:sectPr>`;
+  const run=(x,size)=>{
+    const rp=(x.b?"<w:b/><w:bCs/>":"")+(size?`<w:sz w:val="${size}"/><w:szCs w:val="${size}"/>`:"");
+    return x.t.split("\n").map((seg,i)=>`<w:r>${rp?`<w:rPr>${rp}</w:rPr>`:""}${i?"<w:br/>":""}<w:t xml:space="preserve">${xesc(seg)}</w:t></w:r>`).join("");
+  };
+  const para=(b,extra)=>{
+    let pp="";
+    if(b.keepNext) pp+="<w:keepNext/>";
+    if(b.pageBreak) pp+="<w:pageBreakBefore/>";
+    pp+=`<w:spacing w:before="${(b.before||0)*20}" w:after="${(b.after||0)*20}"${b.line?` w:line="${b.line}" w:lineRule="auto"`:""}/>`;
+    pp+=`<w:jc w:val="${b.align==="center"?"center":b.align==="left"?"left":"both"}"/>`;
+    if(extra) pp+=extra;
+    const size=b.size?b.size*2:0;
+    return `<w:p><w:pPr>${pp}</w:pPr>${b.runs.map(x=>run(x,size)).join("")}</w:p>`;
+  };
+  let landscapeNext=false, body="";
+  const bd='w:val="single" w:sz="4" w:space="0" w:color="000000"';
+  const table=(b,width)=>{
+    const tot=b.w.reduce((a,c)=>a+c,0); const cols=b.w.map(x=>Math.floor(x/tot*width));
+    const cellP=p=>para({runs:p.runs.length?p.runs:[R("")],after:2,line:240,align:"left",size:10});
+    const tc=(w,inner,pr)=>`<w:tc><w:tcPr><w:tcW w:w="${w}" w:type="dxa"/>${pr||""}</w:tcPr>${inner}</w:tc>`;
+    let x=`<w:tbl><w:tblPr><w:tblW w:w="${width}" w:type="dxa"/><w:tblBorders><w:top ${bd}/><w:left ${bd}/><w:bottom ${bd}/><w:right ${bd}/><w:insideH ${bd}/><w:insideV ${bd}/></w:tblBorders><w:tblLayout w:type="fixed"/><w:tblCellMar><w:top w:w="40" w:type="dxa"/><w:left w:w="80" w:type="dxa"/><w:bottom w:w="40" w:type="dxa"/><w:right w:w="80" w:type="dxa"/></w:tblCellMar></w:tblPr><w:tblGrid>${cols.map(c=>`<w:gridCol w:w="${c}"/>`).join("")}</w:tblGrid>`;
+    x+=`<w:tr><w:trPr><w:tblHeader/></w:trPr>${b.head.map((h,i)=>tc(cols[i],para({runs:[R(h,1)],line:240,align:"center",size:10}),`<w:shd w:val="clear" w:color="auto" w:fill="D9E2F3"/><w:vAlign w:val="center"/>`)).join("")}</w:tr>`;
+    b.rows.forEach(row=>{
+      x+="<w:tr><w:trPr><w:cantSplit/></w:trPr>"; let ci=0;
+      row.forEach(c=>{
+        if(c.span && ci+c.span>cols.length) return;
+        const span=c.span||1; const w=cols.slice(ci,ci+span).reduce((a,v)=>a+v,0);
+        if(c.cont) x+=tc(w,"<w:p/>",`<w:vMerge/>`);
+        else x+=tc(w,c.p.map(cellP).join("")||"<w:p/>",(span>1?`<w:gridSpan w:val="${span}"/>`:"")+(c.rs?`<w:vMerge w:val="restart"/>`:""));
+        ci+=span;
+      });
+      x+="</w:tr>";
+    });
+    return x+"</w:tbl>";
+  };
+  blocks.forEach(b=>{
+    if(b.k==="p") body+=para(b);
+    else if(b.k==="table") body+=table(b,landscapeNext?landW:textW)+`<w:p><w:pPr><w:spacing w:after="0"/></w:pPr></w:p>`;
+    else if(b.k==="sect"){ body+=`<w:p><w:pPr>${sect(false)}</w:pPr></w:p>`; landscapeNext=true; }
+  });
+  const NS='xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"';
+  const documentXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ${NS}><w:body>${body}${sect(landscapeNext)}</w:body></w:document>`;
+  const stylesXml=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles ${NS}><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="${xesc(font)}" w:hAnsi="${xesc(font)}" w:eastAsia="${xesc(font)}" w:cs="${xesc(font)}"/><w:sz w:val="${sz}"/><w:szCs w:val="${sz}"/><w:lang w:val="es-PE" w:eastAsia="es-PE" w:bidi="ar-SA"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="0" w:line="${line}" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style><w:style w:type="table" w:default="1" w:styleId="TableNormal"><w:name w:val="Normal Table"/><w:uiPriority w:val="99"/><w:semiHidden/><w:tblPr><w:tblInd w:w="0" w:type="dxa"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="108" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="108" w:type="dxa"/></w:tblCellMar></w:tblPr></w:style></w:styles>`;
+  const ct=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/></Types>`;
+  const rels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/></Relationships>`;
+  const drels=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`;
+  const tit=blocks.find(b=>b.sec==="tit"&&b.align==="center");
+  const core=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title>${xesc(tit?tit.runs[0].t:"Proyecto de tesis")}</dc:title><dc:creator>${xesc(lines(o.au).join("; ")||"Estudiante FAT UNASAM")}</dc:creator><dc:language>es-PE</dc:language></cp:coreProperties>`;
+  const enc=new TextEncoder();
+  return zip([["[Content_Types].xml",ct],["_rels/.rels",rels],["word/document.xml",documentXml],["word/_rels/document.xml.rels",drels],["word/styles.xml",stylesXml],["docProps/core.xml",core]].map(([n,d])=>[n,enc.encode(d)]));
+}
+const CRC=(()=>{const t=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0}return t})();
+function crc32(u){let c=0xFFFFFFFF;for(let i=0;i<u.length;i++)c=CRC[(c^u[i])&255]^(c>>>8);return (c^0xFFFFFFFF)>>>0}
+function zip(files){
+  const enc=new TextEncoder(), parts=[], cen=[]; let off=0;
+  const d=new Date(), dt=((d.getFullYear()-1980)<<9)|((d.getMonth()+1)<<5)|d.getDate(), tm=(d.getHours()<<11)|(d.getMinutes()<<5)|(d.getSeconds()>>1);
+  files.forEach(([name,data])=>{
+    const nb=enc.encode(name), crc=crc32(data);
+    const h=new DataView(new ArrayBuffer(30));
+    h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);
+    h.setUint16(10,tm,true);h.setUint16(12,dt,true);h.setUint32(14,crc,true);h.setUint32(18,data.length,true);h.setUint32(22,data.length,true);
+    h.setUint16(26,nb.length,true);h.setUint16(28,0,true);
+    parts.push(new Uint8Array(h.buffer),nb,data);
+    const c=new DataView(new ArrayBuffer(46));
+    c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x0800,true);c.setUint16(10,0,true);
+    c.setUint16(12,tm,true);c.setUint16(14,dt,true);c.setUint32(16,crc,true);c.setUint32(20,data.length,true);c.setUint32(24,data.length,true);
+    c.setUint16(28,nb.length,true);c.setUint32(42,off,true);
+    cen.push(new Uint8Array(c.buffer),nb);
+    off+=30+nb.length+data.length;
+  });
+  const csz=cen.reduce((a,b)=>a+b.length,0);
+  const e=new DataView(new ArrayBuffer(22));
+  e.setUint32(0,0x06054b50,true);e.setUint16(8,files.length,true);e.setUint16(10,files.length,true);e.setUint32(12,csz,true);e.setUint32(16,off,true);
+  const all=[...parts,...cen,new Uint8Array(e.buffer)], out=new Uint8Array(all.reduce((a,b)=>a+b.length,0));
+  let p=0; all.forEach(a=>{out.set(a,p);p+=a.length}); return out;
+}
+</script>
+
+<script>
+/* ===== Interfaz ===== */
+const $=id=>document.getElementById(id);
+const ids=["a1","v1","d1","a2","v2","d2","pr","u","l","y","tc","t","vb","it","cx","h0","me","mt","mn","md","mp","mm","mte","mi","cc","dt","gt","au","as","fn","fs","ls","mw"];
+const SAMPLE={a1:"la",v1:"Gestión del talento humano",d1:"el reclutamiento\nla capacitación\nla evaluación del desempeño",a2:"el",v2:"Desempeño laboral",d2:"la productividad\nla eficiencia\nla calidad del servicio",pr:"en",u:"los colaboradores de la agencia Huaraz de Caja Huancayo",l:"Huaraz",y:"2026",tc:"",t:"rel",vb:"Determinar",it:"s",cx:"v1d2",h0:false};
+const KEY="gen-tesis-fat-v2";
+function read(){const o={};ids.forEach(k=>{const e=$(k);o[k]=e.type==="checkbox"?e.checked:e.value});return o}
+function write(o){ids.forEach(k=>{const e=$(k);if(o[k]===undefined)return;if(e.type==="checkbox")e.checked=!!o[k];else e.value=o[k]})}
+
+let last=null;
+function build(){
+  const o=read(), r=compose(o), B=model(r,o);
+  last={o,r,B};
+  const indep=o.t!=="rel";
+  $("tag1").textContent=indep?"V1 · independiente (X)":"V1 · variable 1 (X)";
+  $("tag2").textContent=indep?"V2 · dependiente (Y)":"V2 · variable 2 (Y)";
+  $("mapa").innerHTML=`<div><b>Esquema:</b> OG → V1 – V2${r.pairLbl.length?" · "+r.pairLbl.map((l,i)=>`OE${i+1} → ${esc(l)}`).join(" · "):""}</div>`+
+    (r.warnings.length?`<ul>${r.warnings.map(w=>`<li class="w">${esc(w)}</li>`).join("")}</ul>`:`<div style="color:var(--ok)">Todo en orden.</div>`);
+  const secs=[["cover","Carátula"],["tit","Título"],["prob","Problemas"],["obj","Objetivos"],["hip","Hipótesis"],["var","Variables"],["mat","Matriz"]];
+  const font=o.fn==="Arial"?"Arial,Helvetica,sans-serif":"'Times New Roman',Times,serif";
+  const style=`font-family:${font};font-size:${o.fs}pt;line-height:${o.ls==="1"?1.15:o.ls};color:#111`;
+  $("paper").innerHTML=secs.map(([k,h])=>{
+    const bl=B.filter(b=>b.sec===k); if(!bl.length) return "";
+    const meter=k==="tit"?`<div class="meter"><span class="${r.words<=r.maxW?"ok":"warn"}">${r.words} palabras</span><span class="m">· máximo configurado: ${r.maxW}</span></div>`:"";
+    return `<div class="sec"><div class="sec-head"><button class="btn ghost sm" data-copy="${k}" aria-label="Copiar ${h}">Copiar</button></div>${meter}
+      <div class="doc${k==="cover"?" cover":""}" id="doc-${k}" style="${style}">${bl.map(blockHTML).join("")}</div></div>`}).join("");
+  try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}
+}
+
+async function copyEls(els){
+  const o=last.o, font=o.fn==="Arial"?"Arial,sans-serif":"'Times New Roman',serif";
+  const html=`<div style="font-family:${font};font-size:${o.fs}pt;line-height:${o.ls==="1"?1.15:o.ls}">`+els.map(e=>e.innerHTML).join("")+`</div>`;
+  const text=els.map(e=>e.innerText).join("\n\n");
+  try{
+    if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+      await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+      return toast("Copiado. Pégalo en Word con Ctrl + V");
+    }
+    throw 0;
+  }catch(e){
+    const sel=window.getSelection(),r=document.createRange();
+    r.setStartBefore(els[0]); r.setEndAfter(els[els.length-1]);
+    sel.removeAllRanges(); sel.addRange(r);
+    let ok=false; try{ok=document.execCommand("copy")}catch(_){}
+    toast(ok?"Copiado. Pégalo en Word con Ctrl + V":"Texto seleccionado: presiona Ctrl + C para copiar");
+  }
+}
+let tt;function toast(m){const t=$("toast");t.textContent=m;t.hidden=false;clearTimeout(tt);tt=setTimeout(()=>t.hidden=true,2800)}
+
+/* Descarga: usa el permiso de descargas cuando la página está publicada; si no, descarga directa del navegador */
+let dlApi=null;
+(async()=>{try{if(window.claude&&typeof window.claude.use==="function"){dlApi=await window.claude.use("downloads")}}catch(e){dlApi=null}})();
+async function downloadDocx(){
+  const {o,r,B}=last;
+  const bytes=docx(B,o);
+  const slug=(r.V1+"_"+r.V2).normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"").slice(0,60);
+  const name=`Proyecto_de_tesis_${slug||"FAT"}.docx`;
+  const blob=new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+  if(dlApi){
+    try{await dlApi.save({filename:name,data:blob});toast("Documento de Word listo");return}
+    catch(e){ if(e&&e.code==="declined"){toast("Descarga cancelada");return} if(e&&e.code==="rate_limited"){toast("Espera un momento e inténtalo de nuevo");return} }
+  }
+  try{
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);toast("Descargando "+name);
+  }catch(e){toast("No se pudo descargar aquí: usa «Copiar todo» y pégalo en Word")}
+}
+
+$("paper").addEventListener("click",e=>{const b=e.target.closest("[data-copy]");if(b)copyEls([$("doc-"+b.dataset.copy)])});
+$("copyAll").onclick=()=>copyEls([...document.querySelectorAll("#paper .doc")]);
+$("copyMat").onclick=()=>copyEls([$("doc-mat")]);
+$("dlDocx").onclick=downloadDocx;
+$("f").addEventListener("input",build);
+$("f").addEventListener("change",build);
+$("f").addEventListener("submit",e=>e.preventDefault());
+$("sample").onclick=()=>{write(SAMPLE);build()};
+$("clear").onclick=()=>{["v1","d1","v2","d2","u","l","tc","me","mt","mn","md","mp","mm","mte","mi"].forEach(k=>$(k).value="");$("v1").focus();build()};
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s)write(s)}catch(e){}
+build();
+</script>
+</body>
+</html>
